@@ -19,6 +19,7 @@ public class TestRunner {
 
   private final DriverTestService driverTestService;
   private final HiberTestService hiberTestService;
+  private final AtomicInteger atomicInteger=new AtomicInteger();
 
   @PostConstruct
   void init(){
@@ -44,8 +45,8 @@ public class TestRunner {
 
   private List<Entity1> generateData() {
     return Stream
-        .generate(()->1)
-        .limit(1_000_000)
+        .generate(atomicInteger::incrementAndGet)
+        .limit(10_000)
         .map(id -> Entity1.builder()
             .field2(UUID.randomUUID().toString())
             .field3(id)

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.hibernate.Session;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DriverTestService {
 
   private final EntityManager entityManager;
@@ -26,6 +28,11 @@ public class DriverTestService {
   public void test(List<Entity1> data){
     var dataS=toCsv(data);
     insert(dataS);
+
+    entityManager.flush();
+
+    log.info("id of first {}",entityManager.find(Entity1.class, data.get(0).getField3()));
+    log.info("id of last {}",entityManager.find(Entity1.class, data.get(data.size()-1).getField3()));
   }
 
 

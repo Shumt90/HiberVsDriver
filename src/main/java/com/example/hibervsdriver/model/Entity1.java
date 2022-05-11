@@ -20,8 +20,10 @@ import lombok.ToString;
 @ToString
 public class Entity1 {
 
-  @Id
+
   private String field2;
+
+  @Id
   private Integer field3;
   private Instant field4;
 
