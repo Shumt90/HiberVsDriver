@@ -6,7 +6,14 @@ spring:
       hibernate:
         jdbc:
           batch_size: 10000
-    show-sql: true
+#        id:
+#          optimizer:
+#            pooled:
+#              preferred: pooled-lo
+#          new_generator_mappings: true
+        order_inserts: true
+        order_updates: true
+    show-sql: false
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=hiber_vs_driver

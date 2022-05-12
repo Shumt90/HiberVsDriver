@@ -26,24 +26,36 @@ public class TestRunner {
 
     log.info("start generation of data");
 
-    var data1= generateData();
-    var data2= generateData();
+    var dataForHiber = generateDataWithoutId();
+    var dataForPostgres = generateDataWithId();
 
     log.info("start hiber test");
 
     var time=System.currentTimeMillis();
-    hiberTestService.test(data1);
+    hiberTestService.test(dataForHiber);
     System.out.println("hiberTestService: "+(System.currentTimeMillis()-time));
 
     log.info("start driver test");
 
     time=System.currentTimeMillis();
-    driverTestService.test(data2);
+    driverTestService.test(dataForPostgres);
     System.out.println("driverTestService: "+(System.currentTimeMillis()-time));
 
   }
 
-  private List<Entity1> generateData() {
+  private List<Entity1> generateDataWithoutId() {
+    return Stream
+        .generate(atomicInteger::incrementAndGet)
+        .limit(10_000)
+        .map(id -> Entity1.builder()
+            .field2(UUID.randomUUID().toString())
+            //.field3(id)
+            .field4(Instant.now())
+            .build())
+        .collect(Collectors.toList());
+  }
+
+  private List<Entity1> generateDataWithId() {
     return Stream
         .generate(atomicInteger::incrementAndGet)
         .limit(10_000)
